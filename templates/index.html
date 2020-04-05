@@ -3,11 +3,32 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <script type="text/javascript" src="../src/app.js"></script>
+    <script type="javascript" src="../src/app.js"></script>
+    <script src="./templates/course.js" type="module"></script>
     <script type="text/javascript">
+
     function completeAndRedirect() {
-        alert('You\'re nearly there! To complete your entry, you simply need to tap \'continue\' on the next page. Good luck!');
-        document.write("esfsdfds sf fsd fdf ");
+
+        var cipher = document.getElementById('cipher').value;
+        var perform = document.getElementById('perform').value;
+
+        if (perform == "Encrypt") {
+            var plaintext = document.getElementById('plaintext').value;
+            document.getElementById('ciphertext').value = cipher + "sfdfdfdsf";
+        }
+
+        else if (perform == "Decrypt") {
+            var ciphertext = document.getElementById('ciphertext').value;
+            document.getElementById('plaintext').value = cipher + "sfdfdfdsf";
+        }
+
+    }
+
+    function switchText() {
+        var plaintext = document.getElementById('plaintext').value;
+        var ciphertext = document.getElementById('ciphertext').value;
+        document.getElementById('plaintext').value = ciphertext;
+        document.getElementById('ciphertext').value = plaintext;
     }
     </script>
         <title>Cipher-App</title>
@@ -17,10 +38,25 @@
 </head>
 
 <body>
-    <form action="javascript:completeAndRedirect();">
-        PLaintest:<br>
-        <input type="text" name="plaintext"><br>
-        <input type="submit" value="Submit">
-</form>
+
+    <form action="http://localhost:3001/encrypt/caesar", method="POST", target="plaintext">
+        <fieldset>
+            <legend>Cipher Suite:</legend>
+            <label for="fname">Plain Text:</label><br>
+            <textarea id="plaintext" name="plaintext" rows="10" cols="30"></textarea><br>
+            <button type="button" name="switch" onclick="javascript:switchText();">⇅</button><br>
+            <label for="lname">Cipher Text:</label><br>
+            <textarea id="ciphertext" name="ciphertext" rows="10" cols="30"></textarea><br>
+            <select id="cipher" name="cipher">
+                <option value="Affine">Affine</option>
+                <option value="Caesar">Caesar</option>
+                <option value="Subsitution">Subsitution</option>
+                <option value="Vigenere">Vigenere</option>
+            </select>
+            <input id="perform" type="submit" value="Encrypt">
+            <input id="perform" type="submit" value="Decrypt">
+        </fieldset>
+    </form>
+
 </body>
 </html>
