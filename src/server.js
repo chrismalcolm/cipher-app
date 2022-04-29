@@ -1,14 +1,30 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const addon = require('../build/Release/addon.node');
+var cors = require('cors')
+
+const config = require('../config.json')["server"];
+const host = config.host;
+const port = config.port;
+const uri = config.uri;
 
 const app = express();
-const PORT = 3001;
+
+app.use(cors());
+
+app.all('/', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    next();
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post('/encrypt/affine', (req, res) => {
+app.get('/', (req, res) => {
+    res.send("Just a quick example.");
+});
+
+app.post(`${uri}/encrypt/affine`, (req, res) => {
 
     var text = req.body.text || "";
     var a = req.body.a || 1;
@@ -18,7 +34,7 @@ app.post('/encrypt/affine', (req, res) => {
 
 });
 
-app.post('/decrypt/affine', (req, res) => {
+app.post(`${uri}/decrypt/affine`, (req, res) => {
 
     var text = req.body.text || "";
     var a = req.body.a || 1;
@@ -28,16 +44,16 @@ app.post('/decrypt/affine', (req, res) => {
 
 });
 
-app.post('/encrypt/caesar', (req, res) => {
+app.post(`${uri}/encrypt/caesar`, (req, res) => {
 
     var text = req.body.text || "";
     var shift = req.body.shift || 0;
-    res.send("hello");
-    //res.send(addon.cipherCaesarEncrpyt(text, shift));
+
+    res.send("hello" + JSON.stringify(req.body) + addon.cipherCaesarEncrpyt(text, shift));
 
 });
 
-app.post('/decrypt/caesar', (req, res) => {
+app.post(`${uri}/decrypt/caesar`, (req, res) => {
 
     var text = req.body.text || "";
     var shift = req.body.shift || 0;
@@ -46,7 +62,7 @@ app.post('/decrypt/caesar', (req, res) => {
 
 });
 
-app.post('/encrypt/subsitution', (req, res) => {
+app.post(`${uri}/encrypt/subsitution`, (req, res) => {
 
     var text = req.body.text || "";
     var keys = req.body.keys || "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -55,7 +71,7 @@ app.post('/encrypt/subsitution', (req, res) => {
 
 });
 
-app.post('/decrypt/subsitution', (req, res) => {
+app.post(`${uri}/decrypt/subsitution`, (req, res) => {
 
     var text = req.body.text || "";
     var keys = req.body.keys || "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -64,7 +80,7 @@ app.post('/decrypt/subsitution', (req, res) => {
 
 });
 
-app.post('/encrypt/vigenere', (req, res) => {
+app.post(`${uri}/encrypt/vigenere`, (req, res) => {
 
     var text = req.body.text || "";
     var keyword = req.body.keyword || "";
@@ -73,7 +89,7 @@ app.post('/encrypt/vigenere', (req, res) => {
 
 });
 
-app.post('/decrypt/vigenere', (req, res) => {
+app.post(`${uri}/decrypt/vigenere`, (req, res) => {
 
     var text = req.body.text || "";
     var keyword = req.body.keyword || "";
@@ -82,4 +98,4 @@ app.post('/decrypt/vigenere', (req, res) => {
 
 });
 
-app.listen(PORT, () => console.log(`Started server at http://localhost:8080!`));
+app.listen(port, host, () => console.log(`Started server ${host} on port ${port}`));

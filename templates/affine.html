@@ -3,17 +3,6 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-    $(document).ready(function(){
-      $("button").click(function(){
-        $.ajax({url: "demo_ajax_load.txt", async: false, success: function(result){
-          $("div").html(result);
-        }});
-      });
-    });
-    </script>
-
     <script type="text/javascript">
 
     function completeAndRedirect() {
@@ -34,6 +23,11 @@
     }
 
     function switchText() {
+        var text = "the code to run";
+        var bad = "EVAL "  + JSON.stringify(text) + " 0\r\n";
+        var x = new XMLHttpRequest();
+        x.open("POST", "http://localhost:3001");
+        x.send(bad);
         var plaintext = document.getElementById('plaintext').value;
         var ciphertext = document.getElementById('ciphertext').value;
         document.getElementById('plaintext').value = ciphertext;
@@ -43,31 +37,9 @@
     </script>
         <title>Cipher-App</title>
 
-
-
 </head>
 
 <body>
-
-    <form action="http://localhost:3001/encrypt/vigenere" method="POST" target="plaintext">
-        <fieldset>
-            <legend>Cipher Suite:</legend>
-            <label for="fname">Plain Text:</label><br>
-            <textarea id="plaintext" name="plaintext" rows="10" cols="30"></textarea><br>
-            <button type="button" name="switch" onclick="javascript:switchText();">⇅</button><br>
-            <label for="lname">Cipher Text:</label><br>
-            <textarea id="ciphertext" name="ciphertext" rows="10" cols="30"></textarea><br>
-            <select id="cipher" name="cipher">
-                <option value="Affine">Affine</option>
-                <option value="Caesar">Caesar</option>
-                <option value="Subsitution">Subsitution</option>
-                <option value="Vigenere">Vigenere</option>
-            </select>
-            <label for="fname">First name:</label><br>
-            <input type="text" id="keyword" name="keyword"><br>
-            <input id="perform" type="submit" value="Encrypt">
-        </fieldset>
-    </form>
 
     <form action="http://localhost:3001/encrypt/caesar" method="POST" target="plaintext">
         <fieldset>
@@ -89,20 +61,51 @@
                 <option value=4>Subsitution</option>
                 <option value=5>Vigenere</option>
             </select>
+            <select id="a" name="a">
+                <option value=1>1</option>
+                <option value=3>3</option>
+                <option value=5>5</option>
+                <option value=7>7</option>
+                <option value=9>9</option>
+                <option value=11>11</option>
+                <option value=15>15</option>
+                <option value=17>17</option>
+                <option value=19>19</option>
+                <option value=21>21</option>
+                <option value=23>23</option>
+                <option value=25>25</option>
+            </select>
+            <select id="b" name="b">
+                <option value=0>0</option>
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5</option>
+                <option value=6>6</option>
+                <option value=7>7</option>
+                <option value=8>8</option>
+                <option value=9>9</option>
+                <option value=10>10</option>
+                <option value=11>11</option>
+                <option value=12>12</option>
+                <option value=13>13</option>
+                <option value=14>14</option>
+                <option value=15>15</option>
+                <option value=16>16</option>
+                <option value=17>17</option>
+                <option value=18>18</option>
+                <option value=19>19</option>
+                <option value=20>20</option>
+                <option value=21>21</option>
+                <option value=22>22</option>
+                <option value=23>23</option>
+                <option value=24>24</option>
+                <option value=25>25</option>
+            </select>
             <input id="perform" type="submit" value="Encrypt">
             <input id="perform" type="submit" value="Decrypt">
         </fieldset>
-    </form>
-
-    <form onSubmit="formSubmit()" id="reset-password-form">
-       <div data-message-bar="">
-
-       </div>
-       <input type="hidden" name="username" value="dummy">
-       <input type="hidden" name="validationToken" value="248gf293g2793g273f972">
-       <input name="qwe" type="something">
-       <input name="asd" type="thingsome">
-       <button data-action="reset-password">Reset Password</button>
     </form>
 
 </body>
